@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>दीपावली — a Diwali greeting</title>
+  <meta name="description" content="A quiet Diwali greeting: one clay diya on dark water, a living flame, and a river of lights." />
+  <meta name="theme-color" content="#070504" />
+  <meta name="color-scheme" content="dark" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%23070504'/%3E%3Cpath d='M32 14c-1 10 5 13 3 22 7-2 8-7 9-12 2 10-2 16-12 17 12 1 20-4 20-14 0-11-10-13-20-13Z' fill='%23ff9a3d'/%3E%3Cpath d='M16 42c0 6 7 10 16 10s16-4 16-10-7-8-16-8-16 2-16 8Z' fill='%23b45a2a'/%3E%3C/svg%3E" />
+
+  <link rel="preload" href="./assets/fonts/rozha-one-devanagari.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./assets/fonts/rozha-one-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./assets/fonts/cormorant-italic.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="./assets/fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+
+  <script>
+    document.documentElement.classList.remove('no-js');
+    document.documentElement.classList.add('js');
+    // safety net: reveal the page even if the WebGL module fails to boot
+    setTimeout(function () {
+      document.body.classList.add('is-ready');
+    }, 4000);
+  </script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "./vendor/three/build/three.module.js",
+        "three/addons/": "./vendor/three/addons/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="experience" id="experience">
+    <!-- fallback sits under the canvas; visible if WebGL is unavailable -->
+    <div class="fallback" aria-hidden="true">
+      <svg class="fallback-diya" viewBox="0 0 600 360" aria-hidden="true">
+        <defs>
+          <radialGradient id="fb-glow" cx="50%" cy="38%" r="55%">
+            <stop offset="0" stop-color="#ffc46b" stop-opacity=".55" />
+            <stop offset=".4" stop-color="#ff8c2f" stop-opacity=".16" />
+            <stop offset="1" stop-color="#ff7a1a" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="fb-bowl" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#c4794c" />
+            <stop offset=".35" stop-color="#7b3d24" />
+            <stop offset="1" stop-color="#2a130b" />
+          </linearGradient>
+          <linearGradient id="fb-flame" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stop-color="#ff6a00" />
+            <stop offset=".45" stop-color="#ffb03a" />
+            <stop offset=".82" stop-color="#fff2c8" />
+            <stop offset="1" stop-color="#fff8e8" stop-opacity=".3" />
+          </linearGradient>
+          <filter id="fb-blur" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="18" />
+          </filter>
+          <filter id="fb-soft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="4" />
+          </filter>
+        </defs>
+        <ellipse cx="300" cy="150" rx="190" ry="150" fill="url(#fb-glow)" />
+        <g filter="url(#fb-soft)">
+          <path d="M300 118c-3-17 9-30 4-48 22 17 25 35 7 53 15-3 24-11 29-23 7 23-9 37-40 39z" fill="url(#fb-flame)" />
+          <ellipse cx="300" cy="126" rx="9" ry="17" fill="#fff6dc" opacity=".85" />
+        </g>
+        <g>
+          <path d="M188 212c0-16 50-27 112-27s112 11 112 27c0 19-46 34-112 34s-112-15-112-34z" fill="url(#fb-bowl)" />
+          <ellipse cx="300" cy="210" rx="103" ry="17" fill="#160c08" />
+          <ellipse cx="300" cy="210" rx="63" ry="10" fill="#3b1a0b" opacity=".85" />
+          <path d="M214 216c16 25 158 25 172 0" fill="none" stroke="#e3a35f" stroke-opacity=".28" stroke-width="2" />
+        </g>
+        <ellipse cx="300" cy="266" rx="118" ry="44" fill="url(#fb-glow)" opacity=".26" filter="url(#fb-blur)" />
+      </svg>
+    </div>
+
+    <canvas id="scene" aria-hidden="true"></canvas>
+
+    <div class="veil" aria-hidden="true">
+      <span class="veil-lamp"></span>
+    </div>
+
+    <header class="meta">
+      <p class="meta-date">8 November 2026</p>
+    </header>
+
+    <main class="content">
+      <div class="title-mask">
+        <h1 class="title" aria-label="दीपावली — Happy Diwali">दीपावली</h1>
+      </div>
+      <p class="blessing">May this light reach you.</p>
+    </main>
+
+    <footer class="controls">
+      <button class="light-btn" id="light-river" type="button">
+        <span class="light-btn-dot" aria-hidden="true"></span>
+        <span class="light-btn-label">light the river</span>
+      </button>
+      <p class="stir-hint">
+        <span class="hint-desktop">move to stir the water</span>
+        <span class="hint-touch">drag to stir the water</span>
+      </p>
+    </footer>
+
+    <p class="sr-only">
+      A single hand-thrown clay diya floats on dark, still water at night. Its flame is the only
+      light; petals and a faint rangoli drift below it, and small lamps glimmer far down the river.
+      The scene is interactive: move to stir the water, or use the “light the river” button.
+    </p>
+
+    <noscript>
+      <style>
+        .veil { display: none; }
+        .title, .blessing, .meta-date, .controls { opacity: 1 !important; transform: none !important; filter: none !important; }
+        .stir-hint, .light-btn { display: none; }
+      </style>
+    </noscript>
+  </div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
